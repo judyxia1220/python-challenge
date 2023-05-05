@@ -16,9 +16,10 @@ import csv
 # Find file path
 csvpath = os.path.join('Resources', 'election_data.csv')
 
-# Create Variables
-votes = []
-candidates = []
+# Create Variables 
+total_votes = 0          
+candidates = []        # store candidate list
+candidate_votes = {}    # account for how many votes goes to each candidates
 
 # Open and read the csv file
 with open (csvpath) as csvfile:
@@ -29,15 +30,56 @@ with open (csvpath) as csvfile:
 
     # loop through every row
     for row in csvreader:
+       
+       # Calculate total votes
+       total_votes += 1
+       
+       # Find different candidates and add them into the list
+       candidate = row[2]
+       
+       if candidate not in candidates:  
+           candidates.append(candidate)
+           candidate_votes[candidate] = 1
+       else:
+           candidate_votes[candidate] += 1
 
-        # Find list of candidates
-        if row not in candidates:
-            
+
+# Create a for loop to calculate percentage of votes each candidates have
+for candidate in candidates:         
+    vote = candidate_votes[candidate]
+    percentage = vote / total_votes * 100
 
 
-total_votes = len(votes)
+# Find winner 
+winner = max(candidate_votes, key=candidate_votes.get)      
 
 
-# Print output into terminal for test
-print("Election Analysis")
-print("--------------------------------------------")
+# Print output and export to text file
+resultpath = os.path.join('Analysis', "Election_Analysis.txt")
+
+with open(resultpath, 'w') as txt:
+    print (f"Election Results")
+    print (f"---------------------------------------------")
+    print (f"Total Votes: {total_votes}")
+    print (f"---------------------------------------------")
+    for candidate in candidates:         
+        vote = candidate_votes[candidate]
+        percentage = vote / total_votes * 100
+        print (f" {candidate}: {percentage:.3f}% ({vote})")
+    print (f"---------------------------------------------")
+    print (f"Winner: {winner}")
+    print (f"---------------------------------------------")
+    
+    #print it in text file
+    txt.write (f"Election Results\n")
+    txt.write (f"---------------------------------------------\n")
+    txt.write (f"Total Votes: {total_votes}\n")
+    txt.write (f"---------------------------------------------\n")
+    for candidate in candidates:         
+        vote = candidate_votes[candidate]
+        percentage = vote / total_votes * 100
+        txt.write (f" {candidate}: {percentage:.3f}% ({vote})\n")
+    txt.write (f"---------------------------------------------\n")
+    txt.write (f"Winner: {winner}\n")
+    txt.write (f"---------------------------------------------\n")
+       
