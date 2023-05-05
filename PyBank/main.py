@@ -77,7 +77,7 @@ with open(resultpath, 'w') as txt:
         f"------------------------------------------------------------------------\n",
         f"Total Months: {total_months}\n",
         f"Total: ${net_total}\n",
-        f"Average Change: ${avg_change:}\n",
+        f"Average Change: ${avg_change:.2f}\n",
         f"Greatest Increase in Profits: ({greatestincdate},${greatest_increase})\n",
         f"Greatest Decrease in Profits: ({greatestdecdate}, ${greatest_decrease})\n"
     )
